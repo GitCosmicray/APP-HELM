@@ -1,0 +1,19 @@
+replicaCount: 2
+
+image:
+  frontend:
+    repository: us-central1-docker.pkg.dev/consummate-rig-453502-q2/private-image-repo/frontend-app
+    tag: 'v40'
+
+
+service:
+  frontend:
+    type: ClusterIP
+    port: 80
+
+
+ingress:
+  enabled: true
+  className: nginx
+  # host: 34.29.88.248  
+  annotations: {}

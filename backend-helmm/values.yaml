@@ -1,0 +1,17 @@
+replicaCount: 2
+
+image:
+  backend:
+    repository: us-central1-docker.pkg.dev/consummate-rig-453502-q2/private-image-repo/backendend-app
+    tag: 'v4'
+
+service:
+  backend:
+    type: ClusterIP
+    port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+#  host: aa9c0dcf3a39a40c0b337039ee79da89-1225075295.us-west-2.elb.amazonaws.com  
+  annotations: {}
