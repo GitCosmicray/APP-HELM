@@ -1,11 +1,27 @@
 pipeline {
     agent any
 
+
     environment {
-        KUBECONFIG = credentials('KUBECONFIG_GKE')  
+        GCLOUD_AUTH = credentials('GCP-jenkins-json')           
+        GCP_PROJECT = 'consummate-rig-453502-q2'
+        GKE_CLUSTER = 'argocd-test'
+        GKE_REGION = 'us-central1'
     }
 
     stages {
+        stage('Authenticate GCP') {
+            steps {
+                sh '''
+                echo "$GCLOUD_AUTH" > sa-key.json
+                gcloud auth activate-service-account --key-file=sa-key.json
+                gcloud config set project $GCP_PROJECT
+                gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
+                '''
+            }
+        }
+        
+        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/GitCosmicray/APP-HELM'
