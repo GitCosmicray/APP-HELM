@@ -12,15 +12,15 @@ pipeline {
     stages {
         stage('Authenticate GCP') {
             steps {
+                withCredentials([file(credentialsId: 'GCP-jenkins-json', variable: 'SA_KEY')]) {
                 sh '''
-                echo "$GCLOUD_AUTH" > sa-key.json
-                gcloud auth activate-service-account --key-file=sa-key.json
+                gcloud auth activate-service-account --key-file=$SA_KEY
                 gcloud config set project $GCP_PROJECT
                 gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
                 '''
             }
         }
-        
+    }   
         
         stage('Checkout') {
             steps {
